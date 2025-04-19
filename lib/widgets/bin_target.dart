@@ -227,7 +227,7 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: 40.0,
+          width: 35.0,
           child: Text(
             label,
             style: UITheme.uiFont(

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:macrodata_refinement/ui_theme.dart';
 
 class AnimatedHoverDigit extends StatefulWidget {
   final int value;
@@ -23,7 +23,6 @@ class AnimatedHoverDigit extends StatefulWidget {
 
 class _AnimatedHoverDigitState extends State<AnimatedHoverDigit>
     with SingleTickerProviderStateMixin {
-  Color get themeColor => const Color(0xFF8EE3F1);
   bool isDragging = false;
   late final AnimationController _controllerAnimation;
   late final Animation<Offset> _offsetAnimation;
@@ -63,17 +62,13 @@ class _AnimatedHoverDigitState extends State<AnimatedHoverDigit>
     super.dispose();
   }
 
-  Widget buildDigit(Color color, {List<Shadow>? shadows}) {
+  Widget buildDigit(Color color, {required bool showShadows}) {
     return SlideTransition(
       position: _offsetAnimation,
       child: Text(
         '${widget.value}',
         textAlign: TextAlign.center,
-        style: GoogleFonts.ibmPlexMono(
-          fontSize: 24,
-          color: color,
-          shadows: shadows,
-        ),
+        style: UITheme.uiFont(24, color: color, glow: showShadows),
       ),
     );
   }
@@ -92,11 +87,8 @@ class _AnimatedHoverDigitState extends State<AnimatedHoverDigit>
         duration: const Duration(milliseconds: 150),
         scale: widget.isHovering || widget.isActive ? 1.4 : 1.0,
         child: buildDigit(
-          themeColor,
-          shadows:
-              widget.isHovering || widget.isActive
-                  ? const [Shadow(blurRadius: 10, color: Colors.cyan)]
-                  : null,
+          UITheme.themeColor,
+          showShadows: widget.isHovering || widget.isActive,
         ),
       ),
     );

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+      If you are serving your web app in a path other than the root, change the
+      href value below to reflect the base path you are serving from.
+
+      The path provided below has to start and end with a slash "/" in order for
+      it to work correctly.
+
+      For more details:
+      * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+      This is a placeholder for base href that will be replaced by the value of
+      the `--base-href` argument provided to `flutter build`.
+    -->
+    <base href="$FLUTTER_BASE_HREF">
+
+    <meta charset="UTF-8">
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+    <meta name="description"
+          content="A pixel-perfect Severance-inspired number sorting interface built with Flutter Web. Drag-and-drop gameplay, retro UI, Lumon-style console design.">
+    <meta name="keywords"
+          content="Severance UI, Flutter Web Game, Number Sorting App, Lumon Industries, MDR Console, Flutter Drag and Drop, Retro UI, Flutter Severance App, Macrodata Refinement">
+    <meta name="author" content="Srinivasa Yadav">
+    <meta property="og:title" content="MDR Console v2.1 - Severance UI in Flutter"/>
+    <meta property="og:description"
+          content="Experience the Severance TV show's MDR console in your browser. Built using Flutter Web with drag-and-drop, glowing UI, and a retro terminal design."/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    <meta property="og:url" content="https://mdrconsole.srinivasa.dev/"/>
+
+    <!-- iOS meta tags & icons -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="macrodata_refinement">
+    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png"/>
+
+    <title>MDR Console v2.1</title>
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        html, body {
+          cursor: url("assets/mdr-cursor.png") 16 16, auto;
+        }
+      /* Wrapper div styles */
+      .loader-wrapper {
+        background-color: #001428;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+      }
+
+      .centered-image {
+        filter: brightness(0) saturate(100%) invert(87%) sepia(26%) saturate(497%) hue-rotate(137deg) brightness(99%) contrast(88%);
+        max-width: 25%;
+        max-height: 25%;
+      }
+    </style>
+</head>
+<body>
+<!-- Custom loader screen -->
+<div class="loader-wrapper" id="loader">
+    <img src="assets/lumon-logo.png" alt="Loading..." class="centered-image"/>
+</div>
+
+<script src="flutter_bootstrap.js" async></script>
+
+// Script to remove Splash Screen after 4 seconds
+<script>
+    window.onload= function(){
+      setTimeout(() => {
+        var loader = document.getElementById('loader');
+        if(loader)loader.remove()
+      }, 4000);
+    }
+</script>
+</body>
+</html>

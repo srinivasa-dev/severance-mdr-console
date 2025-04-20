@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:macrodata_refinement/splash_screen.dart';
 import 'screens/severance_home.dart';
 
 void main() {
@@ -10,9 +15,9 @@ class SeveranceApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SeveranceHomePage(),
+      home: kIsWeb ? SeveranceHomePage() : Platform.isWindows ? SplashScreen() : SeveranceHomePage(),
     );
   }
 }

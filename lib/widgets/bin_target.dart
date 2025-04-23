@@ -56,7 +56,7 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
 
     final animation = Tween<Offset>(
       begin: Offset(0, 0),
-      end: Offset(0, -1),
+      end: Offset(0, -0.15),
     ).animate(
       CurvedAnimation(parent: animationController, curve: Curves.easeOut),
     );
@@ -65,7 +65,7 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
     entry = OverlayEntry(
       builder:
           (_) => Positioned(
-            top: offset.dy,
+            bottom: size.height,
             left: offset.dx,
             width: size.width,
             child: Material(
@@ -111,6 +111,7 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
           Container(
             width: 150,
             decoration: BoxDecoration(
+              color: UITheme.backgroundColor,
               border: Border.all(color: UITheme.themeColor, width: 2.5),
             ),
             alignment: Alignment.center,

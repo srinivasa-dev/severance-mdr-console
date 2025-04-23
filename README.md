@@ -1,3 +1,5 @@
+![MDR-Console Gif](https://github.com/srinivasa-dev/severance-mdr-console/blob/main/doc/mdr-console.gif)
+
 # Severance MDR Console
 
 A Flutter-based cross-platform console UI inspired by the **Severance** series, designed to simulate Macro Data Refinement (MDR) operations in a dark, minimal, corporate-styled environment.
@@ -90,7 +92,7 @@ lib/
 For the Web version of the Severance MDR Console, a custom cursor is applied using the following CSS in index.html:
 ```css
 html, body {
-  cursor: url("assets/mdr-cursor.png") 16 16, auto;
+  cursor: url("./assets/mdr-cursor.png") 16 16, auto;
 }
 ```
 

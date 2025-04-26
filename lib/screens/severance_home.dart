@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:macrodata_refinement/widgets/custom_divider.dart';
+import 'package:macrodata_refinement/widgets/footer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../ui_theme.dart';
@@ -274,8 +275,10 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
               );
             }),
           ),
+          // CustomDivider(height: 4.0, thickness: 2.0),
+          // Text('0x15BBAA : 0xDAEAFC', style: UITheme.uiFont(12)),
           CustomDivider(height: 4.0, thickness: 2.0),
-          Text('0x15BBAA : 0xDAEAFC', style: UITheme.uiFont(12)),
+          Footer(),
           SizedBox(height: 5.0),
         ],
       ),

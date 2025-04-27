@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:macrodata_refinement/ui_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -68,50 +69,64 @@ class Footer extends StatelessWidget {
                   );
                 },
               ),
-              SizedBox(width: 10.0),
-              ElevatedButton.icon(
-                onPressed: () async {
-                  await _openUrl('');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                    side: BorderSide(color: UITheme.themeColor, width: 1.5),
-                  ),
-                  overlayColor: UITheme.themeColor,
+              if (kIsWeb)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(width: 10.0),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await _openUrl(
+                          'https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.exe',
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                          side: BorderSide(
+                            color: UITheme.themeColor,
+                            width: 1.5,
+                          ),
+                        ),
+                        overlayColor: UITheme.themeColor,
+                      ),
+                      icon: Image.asset(
+                        'assets/brand-logos/windows.png',
+                        color: UITheme.themeColor,
+                        height: 20.0,
+                        width: 20.0,
+                      ),
+                      label: Text('Windows', style: UITheme.uiFont(14.0)),
+                    ),
+                    SizedBox(width: 8.0),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await _openUrl(
+                          'https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.dmg',
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.zero,
+                          side: BorderSide(
+                            color: UITheme.themeColor,
+                            width: 1.5,
+                          ),
+                        ),
+                        overlayColor: UITheme.themeColor,
+                      ),
+                      icon: Image.asset(
+                        'assets/brand-logos/apple.png',
+                        color: UITheme.themeColor,
+                        height: 20.0,
+                        width: 20.0,
+                      ),
+                      label: Text('macOS', style: UITheme.uiFont(14.0)),
+                    ),
+                  ],
                 ),
-                icon: Image.asset(
-                  'assets/brand-logos/windows.png',
-                  color: UITheme.themeColor,
-                  height: 20.0,
-                  width: 20.0,
-                ),
-                label: Text('Windows', style: UITheme.uiFont(14.0)),
-              ),
-              SizedBox(width: 8.0),
-              ElevatedButton.icon(
-                onPressed: () async {
-                  await _openUrl(
-                    'https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.dmg',
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.zero,
-                    side: BorderSide(color: UITheme.themeColor, width: 1.5),
-                  ),
-                  overlayColor: UITheme.themeColor,
-                ),
-                icon: Image.asset(
-                  'assets/brand-logos/apple.png',
-                  color: UITheme.themeColor,
-                  height: 20.0,
-                  width: 20.0,
-                ),
-                label: Text('macOS', style: UITheme.uiFont(14.0)),
-              ),
             ],
           ),
         ],

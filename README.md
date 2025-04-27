@@ -1,4 +1,4 @@
-![MDR-Console Gif](https://github.com/srinivasa-dev/severance-mdr-console/blob/main/doc/mdr-console.gif)
+![MDR-Console Gif](https://github.com/srinivasa-dev/severance-mdr-console/blob/main/doc/mdr-console.GIF)
 
 # Severance MDR Console
 
@@ -19,8 +19,8 @@ This is a UI/UX concept app for creative exploration and experimentation.
 | Platform    | Download Link                                                  |
 |-------------|----------------------------------------------------------------|
 | **Web**     | [Open in Browser](https://mdrconsole.srinivasa.dev/)           |
-| **Windows** | [Download Windows App]() |
-| **macOS**   | [Download macOS App]()     |
+| **Windows** | [Download Windows App](https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.exe) |
+| **macOS**   | [Download macOS App](https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.dmg)     |
 
 ---
 

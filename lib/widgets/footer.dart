@@ -77,7 +77,7 @@ class Footer extends StatelessWidget {
                     ElevatedButton.icon(
                       onPressed: () async {
                         await _openUrl(
-                          'https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.exe',
+                          'https://raw.githubusercontent.com/srinivasa-dev/severance-mdr-console/main/downloads/MDRConsole.exe',
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -103,7 +103,7 @@ class Footer extends StatelessWidget {
                     ElevatedButton.icon(
                       onPressed: () async {
                         await _openUrl(
-                          'https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.dmg',
+                          'https://raw.githubusercontent.com/srinivasa-dev/severance-mdr-console/main/downloads/MDRConsole.dmg',
                         );
                       },
                       style: ElevatedButton.styleFrom(

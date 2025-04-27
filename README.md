@@ -19,8 +19,8 @@ This is a UI/UX concept app for creative exploration and experimentation.
 | Platform    | Download Link                                                  |
 |-------------|----------------------------------------------------------------|
 | **Web**     | [Open in Browser](https://mdrconsole.srinivasa.dev/)           |
-| **Windows** | [Download Windows App](https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.exe) |
-| **macOS**   | [Download macOS App](https://github.com/srinivasa-dev/severance-mdr-console/blob/main/downloads/MDRConsole.dmg)     |
+| **Windows** | [Download Windows App](https://raw.githubusercontent.com/srinivasa-dev/severance-mdr-console/main/downloads/MDRConsole.exe) |
+| **macOS**   | [Download macOS App](https://raw.githubusercontent.com/srinivasa-dev/severance-mdr-console/main/downloads/MDRConsole.dmg)     |
 
 ---
 

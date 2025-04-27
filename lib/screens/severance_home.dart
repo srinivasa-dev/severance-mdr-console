@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:macrodata_refinement/widgets/custom_alert_dialogs.dart';
 import 'package:macrodata_refinement/widgets/custom_divider.dart';
 import 'package:macrodata_refinement/widgets/footer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -230,7 +231,7 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
                 progress: binProgress[bin]!,
                 onTap:
                     activeIndices.isNotEmpty
-                        ? () {
+                        ? () async {
                           for (int index in activeIndices) {
                             final gridKey = gridKeys[index];
                             final renderBox =
@@ -263,20 +264,29 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
                             );
                           });
                           // Trigger animation (e.g., moving selected items)
-                          Future.delayed(Duration(milliseconds: 300), () {
+                          await Future.delayed(Duration(milliseconds: 300), () {
                             setState(() {
                               // Move the active indices out of view
                               activeIndices
                                   .clear(); // Optionally, clear after animation
                             });
                           });
+
+                          await Future.delayed(Duration(seconds: 3));
+
+                          if (totalProgress == 100) {
+                            await CustomAlertDialogs().showCentPercentDialog(
+                              context,
+                            );
+                            setState(() {
+                              binProgress.updateAll((key, value) => 0);
+                            });
+                          }
                         }
                         : null,
               );
             }),
           ),
-          // CustomDivider(height: 4.0, thickness: 2.0),
-          // Text('0x15BBAA : 0xDAEAFC', style: UITheme.uiFont(12)),
           CustomDivider(height: 4.0, thickness: 2.0),
           Footer(),
           SizedBox(height: 5.0),

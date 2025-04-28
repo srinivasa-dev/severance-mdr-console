@@ -1,6 +1,7 @@
 // widgets/bin_target.dart
 import 'package:flutter/material.dart';
 import '../ui_theme.dart';
+import '../utils/global_scale.dart';
 
 class BinTarget extends StatefulWidget {
   final int bin;
@@ -19,27 +20,16 @@ class BinTarget extends StatefulWidget {
 }
 
 class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<Offset> _animationOffset;
   final GlobalKey _boxKey = GlobalKey();
+
+  late double scaleFactor;
+
+  double _boxWidth = 180.0;
 
   @override
   void initState() {
     super.initState();
-
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 400),
-      vsync: this,
-    );
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _animationOffset = Tween<Offset>(
-        begin: const Offset(0, 1), // start off-screen bottom
-        end: const Offset(0, 0), // final position (visible)
-      ).animate(
-        CurvedAnimation(parent: _animationController, curve: Curves.easeOut),
-      );
-    });
+    scaleFactor = ScaleFactorProvider.scaleFactor;
   }
 
   void showAndHide() async {
@@ -56,7 +46,7 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
 
     final animation = Tween<Offset>(
       begin: Offset(0, 0),
-      end: Offset(0, -0.15),
+      end: Offset(0, scaleFactor <= 0.8 ? -0.45 : -0.15),
     ).animate(
       CurvedAnimation(parent: animationController, curve: Curves.easeOut),
     );
@@ -87,9 +77,12 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
   }
 
   @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Update the scale factor when the screen size or orientation changes
+    ScaleFactorProvider.updateScaleFactor(context);
+    scaleFactor = ScaleFactorProvider.scaleFactor;
+    _boxWidth = scaleFactor <= 0.8 ? 120.0 : scaleFactor <= 0.95 ? 130.0 : 180.0;
   }
 
   @override
@@ -107,22 +100,28 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
         key: _boxKey,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 3.0),
+          SizedBox(height: 3.0 * scaleFactor),
           Container(
-            width: 150,
+            width: _boxWidth * scaleFactor,
             decoration: BoxDecoration(
               color: UITheme.backgroundColor,
-              border: Border.all(color: UITheme.themeColor, width: 2.5),
+              border: Border.all(
+                color: UITheme.themeColor,
+                width: 2.5 * scaleFactor,
+              ),
             ),
             alignment: Alignment.center,
             child: Text(
               '0${widget.bin}',
-              style: UITheme.uiFont(16.0, fontWeight: FontWeight.w600),
+              style: UITheme.uiFont(
+                16.0 * scaleFactor,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-          const SizedBox(height: 3.0),
+          SizedBox(height: 3.0 * scaleFactor),
           SizedBox(
-            width: 150,
+            width: _boxWidth * scaleFactor,
             child: Stack(
               children: [
                 Positioned.fill(
@@ -133,10 +132,13 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  width: 150,
-                  padding: const EdgeInsets.only(left: 2.0),
+                  width: _boxWidth * scaleFactor,
+                  padding: EdgeInsets.only(left: 2.0 * scaleFactor),
                   decoration: BoxDecoration(
-                    border: Border.all(color: UITheme.themeColor, width: 2.5),
+                    border: Border.all(
+                      color: UITheme.themeColor,
+                      width: 2.5 * scaleFactor,
+                    ),
                   ),
                   child: ShaderMask(
                     blendMode: BlendMode.srcATop,
@@ -149,14 +151,14 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
                         ),
                     child: Text(
                       '${widget.progress}%',
-                      style: UITheme.uiFont(16.0),
+                      style: UITheme.uiFont(16.0 * scaleFactor),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 3.0),
+          SizedBox(height: 3.0 * scaleFactor),
         ],
       ),
     );
@@ -164,11 +166,11 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
 
   Widget _categoryBox() {
     return Container(
-      width: 150,
-      padding: EdgeInsets.all(3.0),
+      width: _boxWidth * scaleFactor,
+      padding: EdgeInsets.all(3.0 * scaleFactor),
       decoration: BoxDecoration(
         color: UITheme.backgroundColor,
-        border: Border.all(color: UITheme.themeColor, width: 2.5),
+        border: Border.all(color: UITheme.themeColor, width: 2.5 * scaleFactor),
       ),
       alignment: Alignment.center,
       child: Column(
@@ -176,7 +178,10 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
         children: [
           Container(
             decoration: BoxDecoration(
-              border: Border.all(color: UITheme.themeColor, width: 2.5),
+              border: Border.all(
+                color: UITheme.themeColor,
+                width: 2.5 * scaleFactor,
+              ),
             ),
             alignment: Alignment.center,
             child: Row(
@@ -184,36 +189,39 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
               children: [
                 Text(
                   '0${widget.bin}',
-                  style: UITheme.uiFont(16.0, fontWeight: FontWeight.w600),
+                  style: UITheme.uiFont(
+                    16.0 * scaleFactor,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 10.0 * scaleFactor),
           _binCategoryProgress(
             label: 'WO',
             progress: widget.progress / 100,
             color: Colors.greenAccent,
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 10.0 * scaleFactor),
           _binCategoryProgress(
             label: 'FC',
             progress: widget.progress / 100,
             color: Colors.yellow[100] ?? Colors.transparent,
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 10.0 * scaleFactor),
           _binCategoryProgress(
             label: 'DR',
             progress: widget.progress / 100,
             color: Colors.pink[100] ?? Colors.transparent,
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 10.0 * scaleFactor),
           _binCategoryProgress(
             label: 'MA',
             progress: widget.progress / 100,
             color: Colors.indigoAccent,
           ),
-          SizedBox(height: 10.0),
+          SizedBox(height: 10.0 * scaleFactor),
         ],
       ),
     );
@@ -228,11 +236,11 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: 35.0,
+          width: 35.0 * scaleFactor,
           child: Text(
             label,
             style: UITheme.uiFont(
-              16.0,
+              16.0 * scaleFactor,
               fontWeight: FontWeight.w500,
               color: color,
             ),
@@ -241,13 +249,13 @@ class _BinTargetState extends State<BinTarget> with TickerProviderStateMixin {
         Flexible(
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: color, width: 2),
+              border: Border.all(color: color, width: 2.0 * scaleFactor),
             ),
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: Colors.transparent,
               color: color,
-              minHeight: 20.0,
+              minHeight: 20.0 * scaleFactor,
             ),
           ),
         ),

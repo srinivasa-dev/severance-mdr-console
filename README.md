@@ -16,11 +16,11 @@ This is a UI/UX concept app for creative exploration and experimentation.
 
 ## 📥 Download Links
 
-| Platform    | Download Link                                                  |
-|-------------|----------------------------------------------------------------|
-| **Web**     | [Open in Browser](https://mdrconsole.srinivasa.dev/)           |
+| Platform    | Download Link                                                                                                               |
+|-------------|-----------------------------------------------------------------------------------------------------------------------------|
+| **Web**     | [Open in Browser](https://mdrconsole.srinivasa.dev/)                                                                        |
 | **Windows** | [Download Windows App](https://raw.githubusercontent.com/srinivasa-dev/severance-mdr-console/main/downloads/MDRConsole.exe) |
-| **macOS**   | [Download macOS App](https://raw.githubusercontent.com/srinivasa-dev/severance-mdr-console/main/downloads/MDRConsole.dmg)     |
+| **macOS**   | [Download macOS App](https://raw.githubusercontent.com/srinivasa-dev/severance-mdr-console/main/downloads/MDRConsole.dmg)   |
 
 ---
 
@@ -49,15 +49,19 @@ This is a UI/UX concept app for creative exploration and experimentation.
 ## 📁 Project Structure
 ```bash
 lib/
-├── main.dart                   # App entry point and platform handling
-├── ui_theme.dart               # Global styles, fonts, and colors
-├── splash_screen.dart          # Initial splash screen widget
+├── main.dart                  # App entry point and platform handling
+├── ui_theme.dart              # Global styles, fonts, and colors
+├── splash_screen.dart         # Initial splash screen widget
 ├── screens/
-│   └── severance_home.dart     # Main home screen containing MDR interface
+│   └── severance_home.dart    # Main home screen containing MDR interface
 └── widgets/
-├── bin_target.dart         # Widget for displaying and interacting with bin targets
-├── animated_hover_digit.dart # Animated numeric display on hover
-├── custom_divider.dart     # Custom divider with styling
+├── bin_target.dart            # Widget for displaying and interacting with 
+                                 bin targets
+├── animated_hover_digit.dart  # Animated numeric display on hover
+├── custom_divider.dart        # Custom divider with styling
+├── utils/
+    └── global_scale.dart      # Contains the ScaleFactorProvider class for 
+                                 screen size adjustments
 ```
 
 ### 🔍 File Details
@@ -82,6 +86,10 @@ lib/
 
 - **widgets/custom_divider.dart**  
   A stylized divider line widget used for separating UI sections.
+
+- **utils/global_scale.dart**  
+  This file contains the `ScaleFactorProvider` class, which calculates and applies a scale factor based on the device’s screen width.
+  It helps ensure that the UI remains proportionate and readable across different screen sizes by dynamically adjusting the size of UI elements.
 
 ---
 
@@ -142,6 +150,30 @@ This code ensures that the custom cursor is set when the app launches on macOS, 
 
 ---
 
+## ⚙️ Scale Factor Adjustment
+
+To ensure the app's UI adapts across different screen sizes, the `ScaleFactorProvider` class provides dynamic scaling of UI elements based on the device's screen width. This allows for a consistent user experience on various devices, from small screens to larger displays.
+
+### How it Works
+
+1. **Scale Factor Calculation**  
+   The `updateScaleFactor` method takes the current screen width and assigns an appropriate scale factor:
+  - Smaller screens have a reduced scale factor.
+  - Larger screens use a scale factor closer to `1.0` (no scaling).
+
+   This method helps ensure that the UI remains usable and well-proportioned on all devices.
+
+2. **Scaling Values**  
+   The `scaleValue` method multiplies the provided value by the current scale factor, ensuring that dimensions and spacing are adjusted accordingly.
+
+Example usage in the app:
+```dart
+ScaleFactorProvider.updateScaleFactor(context);
+double scaledValue = ScaleFactorProvider.scaleValue(originalValue);
+```
+
+---
+
 ## ▶️ Getting Started
 
 ### Prerequisites
@@ -156,7 +188,7 @@ This code ensures that the custom cursor is set when the app launches on macOS, 
 git clone https://github.com/srinivasa-dev/severance-mdr-console.git
 cd severance-mdr-console
 flutter pub get
-flutter run -d windows   # or chrome, macos, etc.
+flutter run -d windows   # or chrome, macos.
 ```
 
 ---

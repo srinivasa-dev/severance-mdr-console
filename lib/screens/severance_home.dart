@@ -6,6 +6,7 @@ import 'package:macrodata_refinement/widgets/footer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../ui_theme.dart';
+import '../utils/global_scale.dart';
 import '../widgets/animated_hover_digit.dart';
 import '../widgets/bin_target.dart';
 
@@ -17,10 +18,8 @@ class SeveranceHomePage extends StatefulWidget {
 }
 
 class _SeveranceHomePageState extends State<SeveranceHomePage> {
-  final List<List<int>> grid = List.generate(
-    20,
-    (_) => List.generate(20, (_) => Random().nextInt(10)),
-  );
+  int _crossAxisCount = 20;
+  List<List<int>> grid = [];
 
   final Map<int, int> binProgress = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
 
@@ -36,13 +35,33 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
   List<GlobalKey> _binKeys = List.generate(5, (j) => GlobalKey());
   Map<int, GlobalKey> gridKeys = {};
 
+  late double scaleFactor;
+
   @override
   void initState() {
-    // Initialize
+    grid = List.generate(
+      _crossAxisCount,
+      (_) => List.generate(_crossAxisCount, (_) => Random().nextInt(10)),
+    );
+
     for (int i = 0; i < 400; i++) {
       gridKeys[i] = GlobalKey();
     }
+    scaleFactor = ScaleFactorProvider.scaleFactor;
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Update the scale factor when the screen size or orientation changes
+    ScaleFactorProvider.updateScaleFactor(context);
+    scaleFactor = ScaleFactorProvider.scaleFactor;
+    _crossAxisCount = scaleFactor <= 0.8 ? 10 : 20;
+    grid = List.generate(
+      _crossAxisCount,
+      (_) => List.generate(_crossAxisCount, (_) => Random().nextInt(10)),
+    );
   }
 
   void _addAnimatedDigitOverlay(Offset start, Offset end, int value) {
@@ -83,11 +102,11 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
           Stack(
             children: [
               Positioned(
-                right: 25.0,
+                right: 25.0 * scaleFactor,
                 top: 0,
                 bottom: 0,
                 child: Transform.scale(
-                  scale: 0.6,
+                  scale: 0.6 * scaleFactor,
                   child: Image.asset(
                     'assets/lumon-logo.png',
                     color: UITheme.themeColor,
@@ -95,13 +114,16 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 18.0,
-                  horizontal: 60.0,
+                margin: EdgeInsets.symmetric(
+                  vertical: 18.0 * scaleFactor,
+                  horizontal: 60.0 * scaleFactor,
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                padding: EdgeInsets.symmetric(horizontal: 6.0 * scaleFactor),
                 decoration: BoxDecoration(
-                  border: Border.all(color: UITheme.themeColor, width: 2.0),
+                  border: Border.all(
+                    color: UITheme.themeColor,
+                    width: 2.0 * scaleFactor,
+                  ),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,15 +140,18 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
                       },
                       child: Text(
                         'Nivasael',
-                        style: UITheme.uiFont(20, fontWeight: FontWeight.w700),
+                        style: UITheme.uiFont(
+                          20.0 * scaleFactor,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 100.0),
+                      padding: EdgeInsets.only(right: 100.0 * scaleFactor),
                       child: Text(
                         '$totalProgress% Complete',
                         style: UITheme.uiFont(
-                          20,
+                          20.0 * scaleFactor,
                           color: Colors.transparent,
                           fontWeight: FontWeight.w600,
                         ).copyWith(
@@ -144,20 +169,20 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
             ],
           ),
           CustomDivider(),
-          CustomDivider(height: 10.0),
+          CustomDivider(height: 10.0 * scaleFactor),
           Expanded(
             child: GridView.builder(
               itemCount: grid.length * grid[0].length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 20,
-                mainAxisSpacing: 4,
-                crossAxisSpacing: 4,
-                childAspectRatio: 0.8,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: _crossAxisCount,
+                mainAxisSpacing: 4 * scaleFactor,
+                crossAxisSpacing: 4 * scaleFactor,
+                childAspectRatio: 0.8 * scaleFactor,
               ),
               padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
-                int row = index ~/ 20;
-                int col = index % 20;
+                int row = index ~/ _crossAxisCount;
+                int col = index % _crossAxisCount;
                 int val = grid[row][col];
 
                 bool isHovered = false;
@@ -172,36 +197,38 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
 
                 return GestureDetector(
                   onTap: () {
-                    if (isHovered) {
-                      // Mark the entire region as active when tapped
-                      setState(() {
+                    // Mark the entire region as active when tapped
+                    setState(() {
+                      hoveredRow = row;
+                      hoveredCol = col;
+
+                      for (int r = hoveredRow! - 1; r <= hoveredRow! + 1; r++) {
                         for (
-                          int r = hoveredRow! - 1;
-                          r <= hoveredRow! + 1;
-                          r++
+                          int c = hoveredCol! - 1;
+                          c <= hoveredCol! + 1;
+                          c++
                         ) {
-                          for (
-                            int c = hoveredCol! - 1;
-                            c <= hoveredCol! + 1;
-                            c++
-                          ) {
-                            if (r >= 0 && r < 20 && c >= 0 && c < 20) {
-                              int activeIndex = r * 20 + c;
-                              activeIndices.add(
-                                activeIndex,
-                              ); // Add the index to the active set
-                            }
+                          if (r >= 0 &&
+                              r < _crossAxisCount &&
+                              c >= 0 &&
+                              c < _crossAxisCount) {
+                            int activeIndex = r * _crossAxisCount + c;
+                            activeIndices.add(
+                              activeIndex,
+                            ); // Add the index to the active set
                           }
                         }
-                      });
-                    }
+                      }
+                    });
                   },
                   child: Container(
-                    key: gridKeys[row * 20 + col],
+                    key: gridKeys[row * _crossAxisCount + col],
                     child: AnimatedHoverDigit(
                       value: val,
                       isHovering: isHovered,
-                      isActive: activeIndices.contains(row * 20 + col),
+                      isActive: activeIndices.contains(
+                        row * _crossAxisCount + col,
+                      ),
                       onHoverChange: (hovering) {
                         setState(() {
                           if (hovering) {
@@ -220,7 +247,7 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
             ),
           ),
           CustomDivider(),
-          CustomDivider(height: 6.0),
+          CustomDivider(height: 6.0 * scaleFactor),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(5, (i) {
@@ -252,7 +279,8 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
                               _addAnimatedDigitOverlay(
                                 start,
                                 end,
-                                grid[index ~/ 20][index % 20],
+                                grid[index ~/ _crossAxisCount][index %
+                                    _crossAxisCount],
                               );
                             }
                           }
@@ -269,6 +297,8 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
                               // Move the active indices out of view
                               activeIndices
                                   .clear(); // Optionally, clear after animation
+                              hoveredRow = null;
+                              hoveredCol = null;
                             });
                           });
 
@@ -287,9 +317,12 @@ class _SeveranceHomePageState extends State<SeveranceHomePage> {
               );
             }),
           ),
-          CustomDivider(height: 4.0, thickness: 2.0),
-          Footer(),
-          SizedBox(height: 5.0),
+          CustomDivider(
+            height: 4.0 * scaleFactor,
+            thickness: 2.0 * scaleFactor,
+          ),
+          Footer(scaleFactor: scaleFactor),
+          SizedBox(height: 5.0 * scaleFactor),
         ],
       ),
     );
